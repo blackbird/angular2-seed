@@ -1,2 +1,2 @@
 # angular2-seed
-A simple Angular 2/Typescript seed with some goodies.
+A simple Angular 2/Typescript seed with some extra goodies.
