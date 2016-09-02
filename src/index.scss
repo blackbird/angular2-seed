@@ -1,3 +1,15 @@
 body {
+	font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+	font-size: 16px;
 	background: #fff;
+	color: #000;
+}
+app>.loading {
+	height: 96px; width: 96px;
+	margin: -48px 0 0 -48px;
+	position: fixed;
+	top: 50%; left: 50%;
+	text-align: center;
+	line-height: 96px;
+	color: #eee;
 }
