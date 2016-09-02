@@ -10,23 +10,23 @@ const sass = require('gulp-sass');
 const autoprefixer = require('gulp-autoprefixer');
 
 /** Remove build directory **/
-gulp.task('clean', (cb) => {
+gulp.task('clean', function(cb) {
 	return del(["build"], cb);
 });
 
 /** Lint all custom TypeScript files **/
-gulp.task('tslint', () => {
+gulp.task('tslint', function() {
 	return gulp.src("src/**/*.ts")
 	.pipe(tslint())
 	.pipe(tslint.report('prose'));
 });
 
-gulp.task("compile", ['compileTs', 'compileScss'], () => {
+gulp.task("compile", ['compileTs', 'compileScss'], function() {
 	console.log("Compiling TypeScript and SCSS...");
 });
 
 /** Compile TypeScript sources and create sourcemaps in build directory **/
-gulp.task("compileTs", ["tslint"], () => {
+gulp.task("compileTs", ["tslint"], function() {
 	let tsResult = gulp.src("src/**/*.ts")
 	.pipe(sourcemaps.init())
 	.pipe(tsc(tsProject));
@@ -36,7 +36,7 @@ gulp.task("compileTs", ["tslint"], () => {
 });
 
 /** Compile SCSS into CSS **/
-gulp.task("compileScss", () => {
+gulp.task("compileScss", function() {
 	let scssResult = gulp.src("src/**/*.scss")
 	.pipe(sass())
 	.pipe(autoprefixer('last 2 versions'))
@@ -44,18 +44,18 @@ gulp.task("compileScss", () => {
 });
 
 /** Copy all resources that are not TypeScript or SCSS files into build directory **/
-gulp.task("resources", () => {
+gulp.task("resources", function() {
 	return gulp.src(["src/**/*", "!**/*.ts", "!**/*.scss"])
 	.pipe(gulp.dest("build"));
 });
 
 /** Copy all required libraries into build directory **/
-gulp.task("libs", () => {
+gulp.task("libs", function() {
 	return gulp.src([
-		'core-js/client/shim.min.js',
-		'zone.js/dist/zone.min.js',
-		'reflect-metadata/Reflect.js',
-		'systemjs/dist/system.js',
+		'core-js/client/**',
+		'zone.js/dist/**',
+		'reflect-metadata/**',
+		'systemjs/dist/**',
 		'rxjs/**',
 		'@angular/**'
 	], {cwd: "node_modules/**"}) // Glob required here
@@ -63,7 +63,7 @@ gulp.task("libs", () => {
 });
 
 /** Watch for changes in TypeScript, HTML and CSS files **/
-gulp.task('watch', function () {
+gulp.task('watch', function() {
 	gulp.watch(["src/**/*.ts"], ['compileTs']).on('change', function (e) {
 		console.log('TypeScript file ' + e.path + ' has been changed. Compiling.');
 	});
@@ -76,6 +76,6 @@ gulp.task('watch', function () {
 });
 
 /** Build the project **/
-gulp.task("build", ['compile', 'resources', 'libs'], () => {
+gulp.task("build", ['compile', 'resources', 'libs'], function() {
 	console.log("Building the project...");
 });
