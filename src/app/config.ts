@@ -1,7 +1,7 @@
 export class Config {
-	OVERRIDE: boolean = false;
-	ENV: string;
 	DEBUG: boolean;
+	ENV: string;
+	OVERRIDE: boolean = false;
 
 	constructor() {
 		let request = new XMLHttpRequest();

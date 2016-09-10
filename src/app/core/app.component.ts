@@ -1,10 +1,17 @@
 import { Component } from '@angular/core';
 
+import { Config }    from '../config';
+
 @Component({
 	selector: 'app',
-	templateUrl: 'app/component/core/app.html',
-	styleUrls: ['app/component/core/app.css']
+	templateUrl: 'app/core/app.html',
+	styleUrls: ['app/core/app.css'],
+	providers: [Config]
 })
 export class AppComponent {
-	message = 'Hello World!';
+	message: string = 'Hello World!';
+
+	constructor(private config: Config) {
+
+	}
 }

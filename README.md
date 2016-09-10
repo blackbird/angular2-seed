@@ -5,9 +5,11 @@ A simple Angular 2/Typescript seed with some extra goodies.
 
 1. `npm install`: Installs dependencies.
 
-2. `npm run build`: Builds project into the `/build` directory.
+1. `npm run clean`: Cleans out the `/build` directory.
 
-3. `npm start`: Recompiles the project and starts web server.
+1. `npm run build`: Builds project into the `/build` directory.
+
+1. `npm start`: Recompiles the project and starts web server.
 
 NOTE: If you make changes to `index.html`, you will need to rerun `npm run build`.
 
