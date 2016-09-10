@@ -78,8 +78,20 @@ gulp.task('genconfig', function(){
 	let envs = ['common', env];
 	let jsonConfigs = envs.map(function(fileName){ return 'src/app/config/' + fileName + '.json'; });
 	let override = JSON.parse(fs.readFileSync('override.json', 'utf8'));
-	// TODO: inject 'override: true' if override.json exists
-	// TODO: fail gracefully if no override.json exists
+
+	// Check whether override.json has properties
+	let overrideCount = 0;
+
+    for(let prop in override) {
+		console.log(prop);
+        if(override.hasOwnProperty(prop)) {
+            ++overrideCount;
+		}
+    }
+
+	if(overrideCount > 0) {
+		override['OVERRIDE'] = true;
+	}
 
 	gulp.src(jsonConfigs)
 	.pipe(jmerge('config.json', false, false, override))
@@ -112,7 +124,7 @@ gulp.task('watch', function() {
 gulp.task('build', ['compile', 'resources', 'libs'], function() {
 	console.log('Building the project...');
 	return gulp.src(['src/index.html'])
-	.pipe(gulp.dest('build')); 
+	.pipe(gulp.dest('build'));
 });
 
 /** Start the project **/

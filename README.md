@@ -3,7 +3,7 @@ A simple Angular 2/Typescript seed with some extra goodies.
 
 ## Quickstart
 
-1. `npm install`: Installs depedencies.
+1. `npm install`: Installs dependencies.
 
 2. `npm run build`: Builds project into the `/build` directory.
 
