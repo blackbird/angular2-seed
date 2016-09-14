@@ -8,44 +8,47 @@ const tslint = require('gulp-tslint');
 const sourcemaps = require('gulp-sourcemaps');
 const sass = require('gulp-sass');
 const autoprefixer = require('gulp-autoprefixer');
-const minifycss = require('gulp-clean-css');
+const cleancss = require('gulp-clean-css');
 const rename = require('gulp-rename');
 const jmerge = require('gulp-merge-json');
 const fs = require('fs');
 const runSequence = require('run-sequence');
 
+const buildDest = 'build';
+
+// Compile Typescript and SCSS
 gulp.task('compile', ['compileTs', 'compileScss'], function() {
 	console.log('Compiling TypeScript and SCSS...');
 });
 
-/** Compile TypeScript sources and create sourcemaps in build directory **/
+// Compile TypeScript sources and create sourcemaps in build directory
 gulp.task('compileTs', ['tslint'], function() {
 	let tsResult = gulp.src('src/**/*.ts')
 	.pipe(sourcemaps.init())
 	.pipe(tsc(tsProject));
 	return tsResult.js
 	.pipe(sourcemaps.write('.'))
-	.pipe(gulp.dest('build'));
+	.pipe(gulp.dest(buildDest));
 });
 
-/** Compile SCSS into CSS **/
+// Compile SCSS sources
 gulp.task('compileScss', function() {
 	let scssResult = gulp.src('src/**/*.scss')
 	.pipe(sass())
 	.pipe(autoprefixer('last 2 versions'))
 	.pipe(gulp.dest('build'))
 	.pipe(rename({suffix: '.min'}))
-	.pipe(minifycss())
-	.pipe(gulp.dest('build'));
+	.pipe(cleancss())
+	.pipe(gulp.dest(buildDest));
 });
 
-/** Copy all resources that are not TypeScript or SCSS files into build directory **/
+// Copy all resources that are not TypeScript or SCSS files into build directory
 gulp.task('resources', function() {
 	return gulp.src(['src/**/*', '!**/*.ts', '!**/*.scss', '!src/index.html'])
-	.pipe(gulp.dest('build'));
+	.pipe(gulp.dest(buildDest));
 });
 
-/** Copy all required libraries into build directory **/
+// Copy all required libraries into build directory
 gulp.task('libs', function() {
 	return gulp.src([
 		'core-js/client/**',
@@ -55,17 +58,17 @@ gulp.task('libs', function() {
 		'rxjs/**',
 		'@angular/**'
 	], {cwd: 'node_modules/**'}) // Glob required here
-	.pipe(gulp.dest('build/lib'));
+	.pipe(gulp.dest(buildDest + '/lib'));
 });
 
-/** Lint all custom TypeScript files **/
+// Lint all custom TypeScript files
 gulp.task('tslint', function() {
 	return gulp.src('src/**/*.ts')
 	.pipe(tslint())
 	.pipe(tslint.report('prose'));
 });
 
-/** Generate configuration JSON **/
+// Generate configuration JSON
 gulp.task('genconfig', function(){
 	let envIndex = process.argv.indexOf('--env');
 	if (envIndex > -1) {
@@ -75,36 +78,20 @@ gulp.task('genconfig', function(){
 	}
 	let env = process.argv[envIndex];
 
-	let envs = ['common', env];
-	let jsonConfigs = envs.map(function(fileName){ return 'src/app/config/' + fileName + '.json'; });
-	let override = JSON.parse(fs.readFileSync('override.json', 'utf8'));
-
-	// Check whether override.json has properties
-	let overrideCount = 0;
-
-    for(let prop in override) {
-		console.log(prop);
-        if(override.hasOwnProperty(prop)) {
-            ++overrideCount;
-		}
-    }
-
-	if(overrideCount > 0) {
-		override['OVERRIDE'] = true;
-	}
-
-	gulp.src(jsonConfigs)
-	.pipe(jmerge('config.json', false, false, override))
-	.pipe(gulp.dest('build/app'));
-
+	gulp.src('config/env.' + env + '.ts')
+	.pipe(rename('env.ts'))
+	.pipe(sourcemaps.init())
+	.pipe(tsc())
+	.pipe(sourcemaps.write('.'))
+	.pipe(gulp.dest(buildDest + '/app'));
 });
 
-/** Remove build directory **/
+// Remove build directory
 gulp.task('clean', function(cb) {
-	return del(['build'], cb);
+	return del([buildDest], cb);
 });
 
-/** Watch for changes in TypeScript, HTML and CSS files **/
+// Watch for changes in TypeScript, HTML and CSS files
 gulp.task('watch', function() {
 	gulp.watch(['src/**/*.ts'], ['compileTs']).on('change', function (e) {
 		console.log('TypeScript file ' + e.path + ' has been changed. Compiling.');
@@ -115,23 +102,23 @@ gulp.task('watch', function() {
 	gulp.watch([['src/**/*', '!**/*.ts', '!**/*.scss']], ['resources']).on('change', function (e) {
 		console.log('Resource file ' + e.path + ' has been changed. Updating.');
 	});
-	gulp.watch(['src/app/config/*.json', 'override.json'], ['genconfig']).on('change', function (e) {
+	gulp.watch(['config/*.ts'], ['genconfig']).on('change', function (e) {
 		console.log('Config file ' + e.path + ' has been changed. Updating.');
 	});
 });
 
-/** Build the project **/
+// Build the project
 gulp.task('build', ['compile', 'resources', 'libs'], function() {
 	console.log('Building the project...');
 	return gulp.src(['src/index.html'])
-	.pipe(gulp.dest('build'));
+	.pipe(gulp.dest(buildDest));
 });
 
-/** Start the project **/
+// Start the project
 gulp.task('default', function(cb) {
-	runSequence('compile',
+	runSequence('genconfig',
+				'compile',
 				'resources',
-				'genconfig',
 				'watch',
 				cb);
 });

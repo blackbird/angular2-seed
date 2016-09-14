@@ -1,7 +1,7 @@
 # angular2-seed
 A simple Angular 2/Typescript seed with some extra goodies.
 
-## Tooling
+## Setup/Tooling
 
 1. This project is provided with an `.editorconfig` file (http://editorconfig.org/). Editor config allows us to keep certain editor-dependent style choices consistent between our development machines. Check out http://editorconfig.org/#download and download the corresponding plugin for your editor of choice (support for Sublime, Atom, Brackets, VS Code, etc).
 
