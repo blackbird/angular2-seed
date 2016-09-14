@@ -10,8 +10,6 @@ const sass = require('gulp-sass');
 const autoprefixer = require('gulp-autoprefixer');
 const cleancss = require('gulp-clean-css');
 const rename = require('gulp-rename');
-const jmerge = require('gulp-merge-json');
-const fs = require('fs');
 const runSequence = require('run-sequence');
 
 const buildDest = 'build';
