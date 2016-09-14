@@ -1,11 +1,10 @@
 (function (global) {
 
-	// map tells the System loader where to look for things
+	// Tells the System loader where to look for things
 	var map = {
-		// app location
 		'app': 'app',
 
-		// angular bundles
+		// Angular bundles
 		'@angular/common': 'lib/@angular/common/bundles/common.umd.js',
 		'@angular/compiler': 'lib/@angular/compiler/bundles/compiler.umd.js',
 		'@angular/core': 'lib/@angular/core/bundles/core.umd.js',
@@ -15,11 +14,11 @@
 		'@angular/platform-browser-dynamic': 'lib/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic.umd.js',
 		'@angular/router': 'lib/@angular/router/bundles/router.umd.js',
 
-		// other libraries
+		// Other libraries
 		'rxjs': 'lib/rxjs'
 	};
 
-	// packages tells the System loader how to load when no filename and/or no extension
+	// Tells the System loader how to load when no filename and/or no extension
 	var packages = {
 		'app': {main: 'bootstrap.js', defaultExtension: 'js'},
 		'rxjs': {defaultExtension: 'js'}

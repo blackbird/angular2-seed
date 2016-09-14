@@ -1,5 +1,12 @@
+# Compiled output
 /build
+
+# Dependencies
 /node_modules
+
+# Misc
 /typings
 npm-debug.log
+
+# System files
 .DS_Store

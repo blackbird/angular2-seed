@@ -17,10 +17,6 @@ export class Config {
 							that[key] = configJSON[key];
 						}
 
-						if(that.ENV === 'development') {
-							console.log(that);
-						}
-
 						if(that.ENV === 'staging' || that.ENV === 'production') {
 							if (that.OVERRIDE === true) {
 								console.error('Remove "override.json" in staging and production!!!');
