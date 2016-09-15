@@ -3,12 +3,13 @@ import { BrowserModule }            from '@angular/platform-browser';
 
 import { ENV }                      from './env';
 import { AppComponent }             from './core/app.component';
+import { FeatureComponent }         from './feature/feature';
 
 if(ENV.NAME === 'production') { enableProdMode(); }
 
 @NgModule({
 	imports:      [BrowserModule],
-	declarations: [AppComponent],
+	declarations: [AppComponent, FeatureComponent],
 	bootstrap:    [AppComponent]
 })
 export class AppModule {}

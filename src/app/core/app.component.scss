@@ -1,0 +1,11 @@
+.section {
+	.title {
+		color: #222;
+		&.is-uppercase {
+			text-transform: uppercase;
+		}
+	}
+	.message {
+		color: #555;
+	}
+}

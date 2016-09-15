@@ -11,6 +11,7 @@ const autoprefixer = require('gulp-autoprefixer');
 const cleancss = require('gulp-clean-css');
 const rename = require('gulp-rename');
 const runSequence = require('run-sequence');
+const fs = require('fs');
 
 const buildDest = 'build';
 
@@ -22,22 +23,22 @@ gulp.task('compile', ['compileTs', 'compileScss'], function() {
 // Compile TypeScript sources and create sourcemaps in build directory
 gulp.task('compileTs', ['tslint'], function() {
 	let tsResult = gulp.src('src/**/*.ts')
-	.pipe(sourcemaps.init())
-	.pipe(tsc(tsProject));
+		.pipe(sourcemaps.init())
+		.pipe(tsc(tsProject));
 	return tsResult.js
-	.pipe(sourcemaps.write('.'))
-	.pipe(gulp.dest(buildDest));
+		.pipe(sourcemaps.write('.'))
+		.pipe(gulp.dest(buildDest));
 });
 
 // Compile SCSS sources
 gulp.task('compileScss', function() {
 	let scssResult = gulp.src('src/**/*.scss')
-	.pipe(sass())
-	.pipe(autoprefixer('last 2 versions'))
-	.pipe(gulp.dest('build'))
-	.pipe(rename({suffix: '.min'}))
-	.pipe(cleancss())
-	.pipe(gulp.dest(buildDest));
+		.pipe(sass())
+		.pipe(autoprefixer('last 2 versions'))
+		.pipe(gulp.dest('build'))
+		.pipe(rename({suffix: '.min'}))
+		.pipe(cleancss())
+		.pipe(gulp.dest(buildDest));
 });
 
 // Copy all resources that are not TypeScript or SCSS files into build directory
@@ -56,17 +57,17 @@ gulp.task('libs', function() {
 		'rxjs/**',
 		'@angular/**'
 	], {cwd: 'node_modules/**'}) // Glob required here
-	.pipe(gulp.dest(buildDest + '/lib'));
+		.pipe(gulp.dest(buildDest + '/lib'));
 });
 
 // Lint all custom TypeScript files
 gulp.task('tslint', function() {
 	return gulp.src('src/**/*.ts')
-	.pipe(tslint())
-	.pipe(tslint.report('prose'));
+		.pipe(tslint())
+		.pipe(tslint.report('prose'));
 });
 
-// Generate configuration JSON
+// Generate configuration
 gulp.task('genconfig', function(){
 	let envIndex = process.argv.indexOf('--env');
 	if (envIndex > -1) {
@@ -77,16 +78,23 @@ gulp.task('genconfig', function(){
 	let env = process.argv[envIndex];
 
 	gulp.src('config/env.' + env + '.ts')
-	.pipe(rename('env.ts'))
-	.pipe(sourcemaps.init())
-	.pipe(tsc())
-	.pipe(sourcemaps.write('.'))
-	.pipe(gulp.dest(buildDest + '/app'));
+		.pipe(rename('env.ts'))
+		.pipe(sourcemaps.init())
+		.pipe(tsc())
+		.pipe(sourcemaps.write('.'))
+		.pipe(gulp.dest(buildDest + '/app'));
 });
 
 // Remove build directory
 gulp.task('clean', function(cb) {
-	return del([buildDest], cb);
+	let dests = [];
+	if(fs.existsSync(buildDest)) {
+		dests.push(buildDest);
+	}
+	else {
+		console.log('No build folder, skipping clean task.');
+	}
+	return del(dests, cb);
 });
 
 // Watch for changes in TypeScript, HTML and CSS files
@@ -109,14 +117,14 @@ gulp.task('watch', function() {
 gulp.task('build', ['compile', 'resources', 'libs'], function() {
 	console.log('Building the project...');
 	return gulp.src(['src/index.html'])
-	.pipe(gulp.dest(buildDest));
+		.pipe(gulp.dest(buildDest));
 });
 
 // Start the project
 gulp.task('default', function(cb) {
 	runSequence('genconfig',
-				'compile',
 				'resources',
+				'compile',
 				'watch',
 				cb);
 });
