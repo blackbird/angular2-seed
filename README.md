@@ -3,6 +3,8 @@ A simple Angular 2/Typescript seed with some extra goodies.
 
 ## Setup/Tooling
 
+- Install Node.js. I recommend installing Node using `n`, a version manager that makes it easy to keep your Node version up to date and switch between versions (https://github.com/tj/n). `npm install -g n && n latest`
+
 - This project is provided with an `.editorconfig` file (http://editorconfig.org/). Editor config allows us to keep certain editor-dependent style choices consistent between our development machines. Check out http://editorconfig.org/#download and download the corresponding plugin for your editor of choice (support for Sublime, Atom, Brackets, VS Code, etc).
 
 ## Quickstart
