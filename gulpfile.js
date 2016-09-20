@@ -94,6 +94,9 @@ gulp.task('genconfig', function(){
 	if(overrideCount > 0) {
 		override['OVERRIDE'] = true;
 	}
+	else {
+		override['OVERRIDE'] = false;
+	}
 
 	gulp.src(jsonConfigs)
 	.pipe(jmerge('env.json', false, false, override))
@@ -124,7 +127,7 @@ gulp.task('watch', function() {
 	gulp.watch([['src/**/*', '!**/*.ts', '!**/*.scss']], ['resources']).on('change', function (e) {
 		console.log('Resource file ' + e.path + ' has been changed. Updating.');
 	});
-	gulp.watch(['config/*.ts'], ['genconfig']).on('change', function (e) {
+	gulp.watch(['override.json', 'config/*.ts'], ['genconfig']).on('change', function (e) {
 		console.log('Config file ' + e.path + ' has been changed. Updating.');
 	});
 });

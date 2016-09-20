@@ -1,7 +1,8 @@
 {
 	"port": 8000,
+	"injectChanges": true,
 	"files": [
-		"build/**/*.{html,htm,css,js}"
+		"build/**/*.{html,htm,css,js,json}"
 	],
 	"server": {
 		"baseDir": "build"
