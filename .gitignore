@@ -4,6 +4,9 @@
 # Dependencies
 /node_modules
 
+# Configuration
+override.json
+
 # Misc
 /typings
 npm-debug.log

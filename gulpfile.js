@@ -10,6 +10,7 @@ const sass = require('gulp-sass');
 const autoprefixer = require('gulp-autoprefixer');
 const cleancss = require('gulp-clean-css');
 const rename = require('gulp-rename');
+const jmerge = require('gulp-merge-json');
 const runSequence = require('run-sequence');
 const fs = require('fs');
 
@@ -73,16 +74,31 @@ gulp.task('genconfig', function(){
 	if (envIndex > -1) {
 		envIndex++ ;
 	} else {
-		throw('Requires --env [env] to be passed');
+		throw('--env [env] must be passed');
 	}
 	let env = process.argv[envIndex];
 
-	gulp.src('config/env.' + env + '.ts')
-		.pipe(rename('env.ts'))
-		.pipe(sourcemaps.init())
-		.pipe(tsc())
-		.pipe(sourcemaps.write('.'))
-		.pipe(gulp.dest(buildDest + '/app'));
+	let envs = ['common', env];
+	let jsonConfigs = envs.map(function(fileName){ return 'config/env.' + fileName + '.json'; });
+	let override = JSON.parse(fs.readFileSync('override.json', 'utf8'));
+
+	// Check whether override.json has properties
+	let overrideCount = 0;
+
+    for(let prop in override) {
+        if(override.hasOwnProperty(prop)) {
+            ++overrideCount;
+		}
+    }
+
+	if(overrideCount > 0) {
+		override['OVERRIDE'] = true;
+	}
+
+	gulp.src(jsonConfigs)
+	.pipe(jmerge('env.json', false, false, override))
+	.pipe(gulp.dest(buildDest + '/app'));
+
 });
 
 // Remove build directory
@@ -116,6 +132,9 @@ gulp.task('watch', function() {
 // Build the project
 gulp.task('build', ['compile', 'resources', 'libs'], function() {
 	console.log('Building the project...');
+	if(!fs.existsSync('override.json')) {
+		fs.writeFileSync('override.json', '{}');
+	}
 	return gulp.src(['src/index.html'])
 		.pipe(gulp.dest(buildDest));
 });
