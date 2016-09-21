@@ -15,7 +15,7 @@ A simple Angular 2/Typescript seed with some extra goodies.
 
 1. `npm start`: Recompiles the project and starts web server.
 
-NOTE: Gulp will watch for changes to your files and automatically update `/build`. However, if you make changes to `index.html`, you will need to run `npm run build` too see those changes.
+NOTE: Gulp will watch for changes to your files and automatically update `/build`. If you are having issues, you can try to rerun run `npm run build`.
 
 ## Styleguide
 

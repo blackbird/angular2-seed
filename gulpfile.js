@@ -124,7 +124,7 @@ gulp.task('watch', function() {
 	gulp.watch(['src/**/*.scss'], ['compileScss']).on('change', function (e) {
 		console.log('SCSS file ' + e.path + ' has been changed. Compiling.');
 	});
-	gulp.watch([['src/**/*', '!**/*.ts', '!**/*.scss']], ['resources']).on('change', function (e) {
+	gulp.watch([['src/index.html', 'src/**/*', '!**/*.ts', '!**/*.scss']], ['resources']).on('change', function (e) {
 		console.log('Resource file ' + e.path + ' has been changed. Updating.');
 	});
 	gulp.watch(['override.json', 'config/*.ts'], ['genconfig']).on('change', function (e) {
