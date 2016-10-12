@@ -34,7 +34,7 @@ gulp.task('compileTs', ['tslint'], function() {
 // Compile SCSS sources
 gulp.task('compileScss', function() {
 	let scssResult = gulp.src('src/**/*.scss')
-		.pipe(sass())
+		.pipe(sass().on('error', sass.logError))
 		.pipe(autoprefixer('last 2 versions'))
 		.pipe(gulp.dest('build'))
 		.pipe(rename({suffix: '.min'}))
