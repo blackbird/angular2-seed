@@ -5,7 +5,6 @@ import { Debug }					from './utils/utils';
 import { Environment }				from './shared/environment';
 
 import { AppComponent }				from './core/app.component';
-import { FeatureComponent }			from './feature/feature';
 
 Debug.enable(true);
 
@@ -21,7 +20,7 @@ if(environment.NAME === 'production') { enableProdMode(); }
 
 @NgModule({
 	imports:      [BrowserModule],
-	declarations: [AppComponent, FeatureComponent],
+	declarations: [AppComponent],
 	bootstrap:    [AppComponent],
 	providers:		[
 		{provide: Environment, useValue: environment}
