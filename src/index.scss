@@ -1,14 +1,21 @@
-/* Global Variables */
+/* Global Variables & Mixins */
 /* -------------------------------------------------------------------------- */
-// TODO: move to separate variables doc
+$default-background-color:		#fff;
+$default-color:					#000;
+$default-font-size:				16px;
+$default-font-stack:			'Helvetica Neue', Helvetica, Arial, sans-serif;
+$default-page-width:			1024px;
 
 /* Base */
 /* -------------------------------------------------------------------------- */
+
+@import 'scss/reset';
+
 html, body {
-	font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
-	font-size: 16px;
-	background: #fff;
-	color: #000;
+	font-family: $default-font-stack;
+	font-size: $default-font-size;
+	background: $default-background-color;
+	color: $default-color;
 }
 app>.loading {
 	width: 96px; height: 96px;
@@ -23,9 +30,13 @@ app>.loading {
 /* Layout */
 /* -------------------------------------------------------------------------- */
 
+.container {
+	width: $default-page-width;
+	margin: 0 auto;
+	display: block;
+}
 
 /* Components */
 /* -------------------------------------------------------------------------- */
 
-/* <component-name> (app/feature/component-name.component.html/ts) */
-/* ---------- */
+@import 'scss/features/*';

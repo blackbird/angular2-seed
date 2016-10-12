@@ -6,7 +6,6 @@ import { Component }	from '@angular/core';
 })
 export class AppComponent {
 	title: string = 'Page Title';
-	message: string = 'Hello World!';
 
 	constructor() {
 

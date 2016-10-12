@@ -7,6 +7,7 @@ const tsProject = tsc.createProject('tsconfig.json');
 const tslint = require('gulp-tslint');
 const sourcemaps = require('gulp-sourcemaps');
 const sass = require('gulp-sass');
+const sassGlob = require('gulp-sass-glob');
 const autoprefixer = require('gulp-autoprefixer');
 const cleancss = require('gulp-clean-css');
 const rename = require('gulp-rename');
@@ -34,6 +35,7 @@ gulp.task('compileTs', ['tslint'], function() {
 // Compile SCSS sources
 gulp.task('compileScss', function() {
 	let scssResult = gulp.src('src/**/*.scss')
+		.pipe(sassGlob())
 		.pipe(sass().on('error', sass.logError))
 		.pipe(autoprefixer('last 2 versions'))
 		.pipe(gulp.dest('build'))
