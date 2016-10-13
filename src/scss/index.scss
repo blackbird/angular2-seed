@@ -9,7 +9,7 @@ $default-page-width:			1024px;
 /* Base */
 /* -------------------------------------------------------------------------- */
 
-@import 'scss/reset';
+@import 'reset';
 
 html, body {
 	font-family: $default-font-stack;
@@ -39,4 +39,4 @@ app>.loading {
 /* Components */
 /* -------------------------------------------------------------------------- */
 
-@import 'scss/features/*';
+@import 'features/*';
