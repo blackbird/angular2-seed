@@ -3,20 +3,22 @@
 # Barrel Template
 barrel_template() {
 feature_name=$1
-printf "export * from './$feature_name.component';\n"
+feature_name_lower=$(tr '[:upper:]' '[:lower:]' <<< ${feature_name:0})
+printf "export * from './$feature_name_lower.component';\n"
 }
 
 # Typescript Template
 typescript_template() {
 feature_name=$1
+feature_name_lower=$(tr '[:upper:]' '[:lower:]' <<< ${feature_name:0})
 printf "import { Component, OnInit }	from '@angular/core';
 
 @Component({
-	selector: '$feature_name',
-	templateUrl: 'app/$feature_name/$feature_name.component.html'
+	selector: '$feature_name_lower',
+	templateUrl: 'app/$feature_name_lower/$feature_name_lower.component.html'
 })
-export class $(tr '[:lower:]' '[:upper:]' <<< ${feature_name:0:1})${feature_name:1}Component implements OnInit {
-	message: string = 'This is a feature named $feature_name.';
+export class ${feature_name}Component implements OnInit {
+	message: string = 'This is ${feature_name}Component.';
 
 	constructor() {}
 
@@ -27,6 +29,7 @@ export class $(tr '[:lower:]' '[:upper:]' <<< ${feature_name:0:1})${feature_name
 # HTML Template
 html_template() {
 feature_name=$1
+feature_name_lower=$(tr '[:upper:]' '[:lower:]' <<< ${feature_name:0})
 printf "<section>
 	<p>{{message}}</p>
 </section>\n"
@@ -35,24 +38,25 @@ printf "<section>
 # SASS Template
 sass_template() {
 feature_name=$1
+feature_name_lower=$(tr '[:upper:]' '[:lower:]' <<< ${feature_name:0})
 printf "/* <$feature_name> (app/$feature_name/$feature_name.component.html/ts) */\n"
 }
 
-read -r -p "Name of feature to generate (lowercase): " feature_name
-feature_name=$(tr '[:upper:]' '[:lower:]' <<< ${feature_name:0})
-read -r -p "Create directory in src/app named $feature_name and add .scss to src/scss/features? [y/N]" response
+read -r -p "Name of feature to generate (PascalCase): " feature_name
+feature_name_lower=$(tr '[:upper:]' '[:lower:]' <<< ${feature_name:0})
+read -r -p "Create directory in src/app named $feature_name_lower and add .scss to src/scss/features? [y/N]" response
 if [[ $response =~ ^([yY][eE][sS]|[yY])$ ]]
 then
-    mkdir -p src/app/$feature_name
-	touch src/app/$feature_name/$feature_name.ts
-	touch src/app/$feature_name/$feature_name.component.ts
-	touch src/app/$feature_name/$feature_name.component.html
-	# touch src/scss/features/_$feature_name.scss
+    mkdir -p src/app/$feature_name_lower
+	touch src/app/$feature_name_lower/$feature_name_lower.ts
+	touch src/app/$feature_name_lower/$feature_name_lower.component.ts
+	touch src/app/$feature_name_lower/$feature_name_lower.component.html
+	touch src/scss/features/_$feature_name_lower.scss
 
-	barrel_template $feature_name > src/app/$feature_name/$feature_name.ts
-	typescript_template $feature_name > src/app/$feature_name/$feature_name.component.ts
-	html_template $feature_name > src/app/$feature_name/$feature_name.component.html
-	# sass_template $feature_name > src/scss/features/_$feature_name.scss
+	barrel_template $feature_name > src/app/$feature_name_lower/$feature_name_lower.ts
+	typescript_template $feature_name > src/app/$feature_name_lower/$feature_name_lower.component.ts
+	html_template $feature_name > src/app/$feature_name_lower/$feature_name_lower.component.html
+	sass_template $feature_name > src/scss/features/_$feature_name_lower.scss
 
 	echo "NOTE: Remember to import and declare your new component(s) in src/app/app.module.ts."
 else
