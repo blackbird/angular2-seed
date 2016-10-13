@@ -46,7 +46,7 @@ gulp.task('compileScss', function() {
 
 // Copy all resources that are not TypeScript or SCSS files into build directory
 gulp.task('resources', function() {
-	return gulp.src(['src/**/*', '!**/*.ts', '!**/*.scss', '!src/index.html'])
+	return gulp.src(['src/**/*', '!**/*.ts', '!**/*.scss', '!src/index.html'], { nodir: true })
 	.pipe(gulp.dest(buildDest));
 });
 
