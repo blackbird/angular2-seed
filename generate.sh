@@ -39,7 +39,10 @@ printf "<section>
 sass_template() {
 feature_name=$1
 feature_name_lower=$(tr '[:upper:]' '[:lower:]' <<< ${feature_name:0})
-printf "/* <$feature_name> (app/$feature_name/$feature_name.component.html/ts) */\n"
+printf "/* <$feature_name> (app/$feature_name/$feature_name.component.html/ts) */
+$feature_name_lower {
+	
+}\n"
 }
 
 read -r -p "Name of feature to generate (PascalCase): " feature_name
