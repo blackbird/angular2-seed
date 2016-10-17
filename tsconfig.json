@@ -12,9 +12,10 @@
 		"noImplicitAny": false
 	},
 	"exclude": [
-		"node_modules"
+		"node_modules",
+		"build"
 	],
 	"atom": {
-		"rewriteTsconfig": true
+		"rewriteTsconfig": false
 	}
 }
